@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
-{% block pagetitle %}Viewing diff {{ base58_id }}{% endblock %}
+{% block pagetitle %}Diff: {% if diff.slug %}'{{ diff.slug }}'{% else %}{{ diff.base58 }}{% endif %}{% endblock %}
 
 {% block content %}
-{{ table }}
-{% endblock }}
+{{ diff.diff_table|safe }}
+{% endblock %}

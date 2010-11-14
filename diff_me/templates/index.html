@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 
-{% block pagetitle %}^^HAI^^{% endblock %}
+{% block title %}Diff Me! - Create and share diffs online.{% endblock %}
 
 {% block content %}
-Hello World!
+<form method="post" action="{% url create %}">
+{% csrf_token %}
+{{ form.as_p }}
+<button type="submit">Diff Me</button>
+</form>
 {% endblock %}

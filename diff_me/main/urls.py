@@ -3,6 +3,9 @@ from django.conf.urls.defaults import *
 urlpatterns = patterns('diff_me.main.views',
     # Example:
     # (r'^diff_me/', include('diff_me.foo.urls')),
-    (r'^$', 'index'),
-    (r'^diff/(?P<id>[\s\d-_])/$', show_by_slug_or_base58)
+    url(r'^$', 'index', name="home"),
+    url(r'^new/$', 'create', name="create"),
+    url(r'^diff/(?P<id>[-\w]{1,})/edit/$', 'edit', name="edit"),
+    url(r'^diff/(?P<id>[-\w]{1,})/$', 'diff_html', name="diff_html"),
+    url(r'^diff/(?P<id>[-\w]{1,}).diff$', 'diff_raw', name="diff_file"),
 )

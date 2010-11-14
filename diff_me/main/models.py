@@ -1,24 +1,23 @@
 from django.db import models
 from django.db.models.signals import post_save
+from django.forms import ModelForm
 from diff_me.base58 import b58encode
 import difflib
+from pygments.lexers import get_all_lexers
 
-LANGUAGE_CHOICES = (
-    ('0', 'Plain Text'),
-    ('1', 'Javascript'),
-    ('2', 'HTML/XML'),
-    ('3', 'PHP'),
-    ('4', 'Python'),
-    ('5', 'Ruby'),
-    ('6', 'CSS'),
-    ('7', 'Perl'),
-)
+def __get_languages():
+    langs = []
+    for lex in get_all_lexers():
+        langs.append((lex[1][0], lex[0]))
+    return langs
+
+LANGUAGE_CHOICES = sorted(__get_languages(), key=lambda lang: lang[1])
 
 class Diff(models.Model):
     
     base58= models.CharField(max_length=50, blank=True)
     slug = models.SlugField(max_length=50, blank=True)
-    language = models.CharField(max_length=4, choices=LANGUAGE_CHOICES)
+    language = models.CharField(max_length=4, choices=LANGUAGE_CHOICES, default='text')
     original = models.TextField()
     original_revision = models.CharField(max_length=200, blank=True)
     modified = models.TextField()
@@ -33,10 +32,33 @@ class Diff(models.Model):
         name = self.slug or self.base58
         return "%s (%s)" % (name, self.parent)
     
+    def fromlines(self):
+        return self.original.splitlines()
+    
+    def tolines(self):
+        return self.modified.splitlines()
+    
     def diff_table(self):
-        fromlines = self.original.split(r'\n')
-        tolines = self.modified.split(r'\n')
-        return differ.make_table(fromlines, tolines)
+        return self.differ.make_table(self.fromlines(), self.tolines())
+    
+    def diff_unified_str(self):
+        return '\n'.join(self.__diff_unified())
+    
+    def diff_unified_html(self):
+        return '<br/>'.join(self.__diff_unified())
+    
+    def __diff_unified(self):
+        fromfile = self.original_revision or 'original'
+        tofile = self.modified_revision or 'modified'
+        lines = []
+        for line in difflib.unified_diff(self.fromlines(), self.tolines(), fromfile=fromfile, tofile=tofile, lineterm=''):
+            lines.append(line)
+        return lines
+    
+class DiffForm(ModelForm):
+    class Meta:
+        model = Diff
+        fields = ('original', 'modified', 'private', 'original_revision', 'modified_revision')
     
 def diff_save_handler(sender, **kwargs):
     created = kwargs['created']

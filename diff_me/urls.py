@@ -5,10 +5,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Default is main site
-    (r'^$', include('diff_me.main.urls')),
-    
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
-    
+    (r'', include('diff_me.main.urls')),
 )
