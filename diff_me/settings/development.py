@@ -94,4 +94,5 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     'diff_me.main',
+    'south',
 )
