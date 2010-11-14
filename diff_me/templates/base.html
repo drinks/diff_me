@@ -3,6 +3,16 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <title>{% block title %}{% block pagetitle %}{% endblock %} - Diff Me!{% endblock %}</title>
+    <style type="text/css" media="screen">
+        table.diff{font:normal 12px/1.5 'consolas', 'monaco', 'Bitstream Vera Sans Mono', courier, monospace;width:100%;color:#333;}
+        table.diff, table.diff colgroup{border:1px solid #eee;}
+        table.diff colgroup:nth-child(3), table.diff colgroup:nth-child(6){width:45%;overflow:auto;}
+        table.diff td{padding:0 5px;}
+        table.diff td.diff_header{text-align:right;}
+        table.diff td
+        span.diff_sub, span.diff_chg{background:rgba(255, 0, 0, 0.3);}
+        span.diff_add{background:rgba(0, 255, 0, 0.25);}
+    </style>
 </head>
 <body>
 {% block header %}{% endblock %}

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block pagetitle %}Diff: {% if diff.slug %}'{{ diff.slug }}'{% else %}{{ diff.base58 }}{% endif %}{% endblock %}
+{% block pagetitle %}{{ diff.original_revision }} vs. {{diff.modified_revision }} ({{ diff.base58 }}){% endblock %}
 
 {% block content %}
 {{ diff.diff_table|safe }}
