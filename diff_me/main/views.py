@@ -29,7 +29,7 @@ def edit(request, base58=None):
         errors = form.errors
         if not errors:
             new_diff = Diff(**form.cleaned_data)
-            new_diff.parent = diff.parent or diff.pk
+            new_diff.parent = diff.parent or Diff.objects.get(pk=diff.pk)
             new_diff.save()
             return redirect(diff_html, base58=new_diff.base58)
         else:
@@ -39,9 +39,9 @@ def edit(request, base58=None):
 
 def diff_html(request, base58=None):
     data = Diff.objects.get(base58=base58)
-    return render_to_response('diff.html', {'diff': data})
+    return render_to_response('diff.html', {'diff': data}, context_instance=RequestContext(request))
 
 def diff_raw(request, base58=None, type='txt'):
-    mime = 'plain' if type=='txt' else type
+    mime = 'plain' if type=='txt' else "x-%s" % type
     data = Diff.objects.get(base58=base58)
     return HttpResponse(data.diff_unified_str(), mimetype='text/%s' % mime)

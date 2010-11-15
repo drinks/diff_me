@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block pagetitle %}Editing {{ diff.base58 }}{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url edit diff.base58 %}">
+{% csrf_token %}
+{{ form.as_p }}
+<button type="submit">Diff Me</button>
+</form>
+{% endblock %}

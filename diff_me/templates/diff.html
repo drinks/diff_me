@@ -3,5 +3,18 @@
 {% block pagetitle %}{{ diff.original_revision }} vs. {{diff.modified_revision }} ({{ diff.base58 }}){% endblock %}
 
 {% block content %}
-{{ diff.diff_table|safe }}
+<div class="diff">
+    <div class="diff-header">
+        <div class="col">
+            <h2>{{ diff.original_revision }}</h2>
+        </div>
+        <div class="col">
+            <h2>{{ diff.modified_revision }}</h2>
+        </div>
+    </div>
+    {{ diff.diff_table|safe }}
+    <div class="diff-footer">
+        <a href="{% url diff_raw base58=diff.base58 type='txt' %}">Raw</a> | <a href="{% url diff_raw base58=diff.base58 type='diff' %}">Download</a>
+    </div>
+</div>
 {% endblock %}

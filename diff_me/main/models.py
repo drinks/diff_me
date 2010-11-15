@@ -30,7 +30,10 @@ class Diff(models.Model):
     
     def __unicode__(self):
         name = self.slug or self.base58
-        return "%s (%s)" % (name, self.parent)
+        if self.parent is not None:
+            return "%s (%s)" % (name, self.parent)
+        else:
+            return name
     
     def fromlines(self):
         return self.original.splitlines()
@@ -39,7 +42,9 @@ class Diff(models.Model):
         return self.modified.splitlines()
     
     def diff_table(self):
-        return self.differ.make_table(self.fromlines(), self.tolines())
+        table = self.differ.make_table(self.fromlines(), self.tolines())
+        # woo string hacking!!
+        return table.replace('rules="groups"', '').replace('nowrap="nowrap"', 'class="diff_text"').replace('&nbsp;', ' ')
     
     def diff_unified_str(self):
         return '\n'.join(self.__diff_unified())

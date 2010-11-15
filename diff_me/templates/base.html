@@ -4,19 +4,47 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <title>{% block title %}{% block pagetitle %}{% endblock %} - Diff Me!{% endblock %}</title>
     <style type="text/css" media="screen">
+        body{margin:0;font-family:'helvetica neue', helvetica, arial, sans-serif;}
+        a{color:#666;text-decoration:none;font:bold 12px 'helvetica neue', helvetica, arial, sans-serif;text-shadow:0 1px 1px rgba(0, 0, 0, 0.3);-webkit-transition:all 0.25s linear;-moz-transition:all 0.25s linear;}
+        a:hover{color:#333;text-shadow:0 2px 2px rgba(0, 0, 0, 0.4);}
+        div#container{width:1020px;margin:0 auto;padding:2em 0;}
+        div.diff{padding:5px;border:1px solid #ccc;}
+        div.diff div.diff-header{}
+        div.diff div.diff-header div.col{width:48%;padding:0 1%;float:left;}
+        div.diff div.diff-footer{padding:1em;text-align:right;}
         table.diff{font:normal 12px/1.5 'consolas', 'monaco', 'Bitstream Vera Sans Mono', courier, monospace;width:100%;color:#333;}
-        table.diff, table.diff colgroup{border:1px solid #eee;}
-        table.diff colgroup:nth-child(3), table.diff colgroup:nth-child(6){width:45%;overflow:auto;}
+        table.diff{border:1px solid #e0e0e0;}
+        /* rows */
+        table.diff tr{border-bottom:1px solid rgba(0, 0, 0, 0.01);background:rgba(0, 0, 0, 0);text-shadow:0 1px 1px rgba(255, 255, 255, 0.25);}
+        table.diff tr.odd{background:rgba(0, 0, 0, 0.03);}
+        table.diff tr.even{border-bottom-color:rgba(0, 0, 0, 0.02);}
+        table.diff tr:hover{background:rgba(0, 0, 0, 0.075);text-shadow:0 1px 0 rgba(0, 0, 0, 0.1);}
+        table.diff tr td.diff_next{display:none;}
+        /* cells */
+        table.diff td{vertical-align:top;}
+        table.diff td.diff_header{text-align:right;color:#ccc;border:1px solid rgba(0, 0, 0, 0.075);border-top:none;border-bottom:none;background:#f0f0f0;width:14px;}
+        table.diff tr:hover td.diff_header{color:#444;background:#e6e6e6;text-shadow:0 1px 1px rgba(0, 0, 0, 0.4);}
+        table.diff td.diff_header:nth-child(2){border-left:none;}
+        table.diff tr td.diff_text{border:1px solid rgba(0, 0, 0, 0.025);border-top:inherit;border-bottom:inherit;width:50%;}
+        table.diff tr td.diff_text:last-child{border-right:none;}
         table.diff td{padding:0 5px;}
-        table.diff td.diff_header{text-align:right;}
-        table.diff td
-        span.diff_sub, span.diff_chg{background:rgba(255, 0, 0, 0.3);}
-        span.diff_add{background:rgba(0, 255, 0, 0.25);}
+        /* changes */
+        table.diff td.ctx_sub{background:#fca2a2;background:rgba(255, 0, 0, 0.25);}
+        table.diff td.ctx_add{background:#b6ffaa;background:rgba(0, 255, 50, 0.25);}
+        table.diff td.ctx_diff{background:#e5e5e5;background:rgba(0, 0, 0, 0.075);}
+        table.diff td.ctx_sub span.diff_sub, table.diff td.ctx_add span.diff_add{background:transparent;}
+        span.diff_sub, span.diff_chg{color:#d82c2c;}
+        span.diff_add{color:#308e40;}
+        
     </style>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}/js/app.js"></script>
 </head>
 <body>
-{% block header %}{% endblock %}
-{% block content %}{% endblock %}
-{% block footer %}{% endblock %}
+    <div id="container">
+    {% block header %}{% endblock %}
+    {% block content %}{% endblock %}
+    {% block footer %}{% endblock %}
+    </div>
 </body>
 </html>
